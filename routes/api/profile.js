@@ -1,9 +1,12 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-// const request = require('request');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+// bring in normalize to give us a proper url, regardless of what user entered
+const normalize = require('normalize-url');
+
+const checkObjectId = require('../../middleware/checkObjectId');
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const Post = require('../../models/Post');
@@ -114,7 +117,7 @@ router.get('/', async (req, res) => {
 //@route   GET api/profile/user/:user_id
 //@desc    Get profile by user_id
 //@access  Public
-router.get('/user/:user_id', async (req, res) => {
+router.get('/user/:user_id', checkObjectId('user_id'), async (req, res) => {
   console.log(req.params.user_id);
   try {
     const profile = await Profile.findOne({
