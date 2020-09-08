@@ -40,12 +40,15 @@ router.post(
           .json({ errors: [{ msg: 'User already exists' }] });
       }
 
-      //Get users gravatar
-      const avatar = gravatar.url(email, {
-        s: '200',
-        r: 'pg',
-        d: 'mm',
-      });
+      //Get users gravatar with normalize
+      const avatar = normalize(
+        gravatar.url(email, {
+          s: '200',
+          r: 'pg',
+          d: 'mm',
+        }),
+        { forceHttps: true }
+      );
 
       //creating a new user object
       user = new User({
