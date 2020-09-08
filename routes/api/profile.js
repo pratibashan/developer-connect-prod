@@ -1,9 +1,11 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-// const request = require('request');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+// bring in normalize to give us a proper url, regardless of what user entered
+const normalize = require('normalize-url');
+
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const Post = require('../../models/Post');
