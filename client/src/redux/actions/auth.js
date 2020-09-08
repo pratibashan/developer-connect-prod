@@ -1,5 +1,4 @@
-// import api from '../../utils/api';
-import axios from 'axios';
+import api from '../../utils/api';
 import * as actionTypes from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../../utils/setAuthToken';
@@ -10,14 +9,12 @@ export const loadUser = () => async (dispatch) => {
     setAuthToken(localStorage.token);
   }
   try {
-    const res = await axios.get('api/auth');
-    // const res = await api.get('/auth');
+    const res = await api.get('/auth');
 
     dispatch({
       type: actionTypes.USER_LOADED,
       payload: res.data,
     });
-    // dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: actionTypes.AUTH_ERROR,
@@ -26,17 +23,9 @@ export const loadUser = () => async (dispatch) => {
 };
 
 //Register User
-export const register = ({ name, email, password }) => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  const body = JSON.stringify({ name, email, password });
-  // const body = { name, email, password };
+export const register = (formData) => async (dispatch) => {
   try {
-    const res = await axios.post('api/users', body, config);
-    // const res = await api.post('/users', body);
+    const res = await api.post('/users', formData);
     dispatch({
       type: actionTypes.REGISTER_SUCCESS,
       payload: res.data,
@@ -52,18 +41,11 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     });
   }
 };
-//Login
+//Login user
 export const login = (email, password) => async (dispatch) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  const body = JSON.stringify({ email, password });
-  // const body = { email, password };
+  const body = { email, password };
   try {
-    const res = await axios.post('api/auth', body, config);
-    // const res = await api.post('/auth', body);
+    const res = await api.post('/auth', body);
     dispatch({
       type: actionTypes.LOGIN_SUCCESS,
       payload: res.data,
@@ -80,11 +62,4 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 //Logout //Clear Profile
-export const logout = () => async (dispatch) => {
-  dispatch({
-    type: actionTypes.CLEAR_PROFILE,
-  });
-  dispatch({
-    type: actionTypes.LOGOUT,
-  });
-};
+export const logout = () => ({ type: actionTypes.LOGOUT });
