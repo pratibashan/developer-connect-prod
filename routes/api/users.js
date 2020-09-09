@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const normalize = require('normalize-url');
+
 const User = require('../../models/User');
 
 //async await can be used in Asynchronous fn whenever we get a promise from the fn call. We can avoid using .then & response lines since async/await waits until it gets the response.
